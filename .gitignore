@@ -1,0 +1,10 @@
+data/raw/*
+!data/raw/*.zip
+data/shapefiles
+
+node_modules
+
+tmp*.json
+tmp*.js
+
+.DS_Store
