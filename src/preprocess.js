@@ -1,11 +1,13 @@
 import fs from 'fs'
-import unzip from 'unzip'
+import Zip from 'node-7z'
 var shapefile = require('shapefile')
 
-fs.createReadStream('data/Static_ 2017_06.zip').pipe(unzip.Extract({path: 'data'}))
+const zip = new Zip()
 
-fs.createReadStream('data/Static_ 2017_06/GEOSPATIAL/RoadSectionLine.zip').pipe(unzip.Extract({path: 'data/shapefiles'}))
-fs.createReadStream('data/Static_ 2017_06/GEOSPATIAL/LampPost.zip').pipe(unzip.Extract({path: 'data/shapefiles'}))
+zip.extractFull('data/raw/Static_ 2017_06.zip', 'data/raw')
+
+zip.extractFull('data/raw/Static_ 2017_06/GEOSPATIAL/RoadSectionLine.zip', 'data/shapefiles')
+zip.extractFull('data/raw/Static_ 2017_06/GEOSPATIAL/LampPost.zip', 'data/shapefiles')
 
 shapefile.read('data/shapefiles/LampPost_May2017/LampPost.shp', 'data/shapefiles/LampPost_May2017/LampPost.dbf')
   .then(json => fs.writeFile('data/geojsons/LampPost.json', JSON.stringify(json)))

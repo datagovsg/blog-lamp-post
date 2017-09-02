@@ -34,3 +34,10 @@ const features = Object.keys(grouped).map(key => {
 })
 
 printJSON({type: 'FeatureCollection', features}, 'roads.json')
+
+const roadNames = {}
+_sortBy(data.features, f => f.properties.RD_CD_DESC).forEach(f => {
+  roadNames[f.properties.RD_CD_DESC] = f.properties.RD_CD
+})
+
+printJSON(roadNames, 'roadNames.json', true)

@@ -19,7 +19,9 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
+    "node-7z": "^0.4.0",
     "shapefile": "^0.6.2",
+    "shpjs": "^3.4.0",
     "unzip": "^0.1.11"
   },
   "babel": {
