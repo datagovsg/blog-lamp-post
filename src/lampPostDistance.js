@@ -10,16 +10,18 @@ import {printJSON} from './helpers/misc'
 import data from '../data/geojsons/LampPost.json'
 import roads from '../data/roads'
 
-const road = roads.features.filter(d => d.properties.RD_CD === 'PAE02K')[0]
+console.log(lampPostDistance('BUT03J'))
 
-const filtered = nearRoad(data, road)
-
-console.log(nearestNeighbour(filtered))
+export default function lampPostDistance (roadID) {
+  const road = roads.features.filter(d => d.properties.RD_CD === roadID)[0]
+  const filtered = nearRoad(data, road)
+  return nearestNeighbour(filtered)
+}
 
 export function nearestNeighbour (data) {
   const points = data.features.map(f => f.geometry.coordinates.map(v => Math.round(v * 1000)))
 
-  const groups = _groupBy(points, pt => pt[0].toFixed().slice(0, 3) + pt[1].toFixed().slice(0, 3))
+  const groups = _groupBy(points, pt => pt[0].toFixed().slice(0, -5) + '.' + pt[1].toFixed().slice(0, -5))
 
   const histogram = {}
 
@@ -56,10 +58,10 @@ export function nearRoad (data, road) {
     feature.geometry.coordinates = fromSVY21(feature.geometry.coordinates)
   })
   road.geometry.coordinates = road.geometry.coordinates.map(d => d.map(fromSVY21))
-  const bufferedRoad = buffer(road, 150, 'meters')
-  printJSON(bufferedRoad, 'tmp2.json')
+  const bufferedRoad = buffer(road, 0.15)
+  printJSON(bufferedRoad, 'public/road.json')
   const filtered = within(data, {type: 'FeatureCollection', features: [bufferedRoad]})
-  printJSON(filtered, 'tmp.json')
+  printJSON(filtered, 'public/lampPost.json')
   filtered.features.forEach(feature => {
     feature.geometry.coordinates = toSVY21(feature.geometry.coordinates)
   })

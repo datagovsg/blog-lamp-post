@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      #map {
+        height: 500px;
+        width: 900px;
+        margin: 100px auto 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjqDojkROjJTFkXw4PCvAS_tQTEHpgjdc"></script>
+    <script type="module">
+      import mapStyle from './mapStyle.js'
+      const map = new google.maps.Map(document.getElementById('map'), {
+        center: new google.maps.LatLng(1.352083, 103.819836),
+        zoom: 12,
+        styles: mapStyle
+      })
+
+      map.data.setStyle({
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 2,
+          fillColor: 'yellow',
+          fillOpacity: 0.8,
+          strokeColor: 'yellow',
+          strokeOpacity: 0,
+          strokeWeight: 0
+        },
+        strokeWeight: 1
+      })
+
+      map.data.loadGeoJson('road.json')
+      map.data.loadGeoJson('lampPost.json')
+    </script>
+  </body>
+</html>

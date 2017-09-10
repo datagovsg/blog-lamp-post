@@ -1,15 +1,14 @@
 export function neighbourKeys (key) {
-  const keyX = +(key.slice(0, key.length / 2))
-  const keyY = +(key.slice(key.length / 2, key.length))
+  const [keyX, keyY] = key.split('.').map(v => +v)
   return [
-    (keyX + 1).toFixed() + (keyY).toFixed(),
-    (keyX + 1).toFixed() + (keyY - 1).toFixed(),
-    (keyX).toFixed() + (keyY - 1).toFixed(),
-    (keyX - 1).toFixed() + (keyY - 1).toFixed(),
-    (keyX - 1).toFixed() + (keyY).toFixed(),
-    (keyX - 1).toFixed() + (keyY + 1).toFixed(),
-    (keyX).toFixed() + (keyY + 1).toFixed(),
-    (keyX + 1).toFixed() + (keyY + 1).toFixed()
+    (keyX + 1).toFixed() + '.' + (keyY).toFixed(),
+    (keyX + 1).toFixed() + '.' + (keyY - 1).toFixed(),
+    (keyX).toFixed() + '.' + (keyY - 1).toFixed(),
+    (keyX - 1).toFixed() + '.' + (keyY - 1).toFixed(),
+    (keyX - 1).toFixed() + '.' + (keyY).toFixed(),
+    (keyX - 1).toFixed() + '.' + (keyY + 1).toFixed(),
+    (keyX).toFixed() + '.' + (keyY + 1).toFixed(),
+    (keyX + 1).toFixed() + '.' + (keyY + 1).toFixed()
   ]
 }
 

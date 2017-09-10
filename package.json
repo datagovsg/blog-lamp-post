@@ -1,10 +1,11 @@
 {
   "name": "sg-roads",
   "version": "0.0.0",
-  "description": "",
+  "description": "Playing around with LTA Geospatial Datasets",
   "main": "src/index.js",
   "scripts": {
-    "test": "exit 0"
+    "postinstall": "babel-node src/preprocess.js",
+    "test": "standard \"src/**/*.js\""
   },
   "repository": {
     "type": "git",
@@ -22,12 +23,7 @@
     "node-7z": "^0.4.0",
     "shapefile": "^0.6.2",
     "shpjs": "^3.4.0",
-    "unzip": "^0.1.11"
-  },
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
+    "standard": "^10.0.3"
   },
   "dependencies": {
     "@turf/buffer": "^4.5.2",
@@ -37,5 +33,15 @@
     "lodash": "^4.17.4",
     "proj4": "^2.4.3",
     "sg-heatmap": "^2.5.8"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "standard": {
+    "globals": [
+      "google"
+    ]
   }
 }
