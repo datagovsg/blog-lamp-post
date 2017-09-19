@@ -1,0 +1,77 @@
+#chart.plottable .line-plot .line {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.7;
+}
+
+@media (max-width: 767px) {
+  #chart.plottable .scatter-plot .symbol {
+    visibility: hidden;
+  }
+}
+
+#chart.plottable .axis text {
+  font-size: 10px;
+  font-weight: 300;
+  fill: #95989A;
+}
+
+#chart.plottable .axis .tick-mark, #chart.plottable .axis .baseline {
+  stroke: #afb1b3;
+}
+
+#chart.plottable .axis.hide-baseline .tick-mark, #chart.plottable .axis.hide-baseline .baseline {
+  visibility: hidden !important;
+}
+
+#chart.plottable .axis-label text {
+  fill: #95989A;
+  font-weight: 400;
+}
+
+#chart.plottable .gridlines line {
+  stroke: #c9cbcc;
+  stroke-width: 1px;
+}
+
+#chart.plottable .guide-line-layer line {
+  stroke: #afb1b3;
+}
+
+#chart.plottable .legend text {
+  fill: #95989A;
+  font-weight: 400;
+}
+
+#chart.plottable .pie-plot .label text {
+  font-size: 10px;
+  font-weight: 300;
+  fill: #95989A;
+}
+
+#chart.plottable .pie-plot .label polyline {
+  stroke: #afb1b3;
+  stroke-width: 1px;
+  fill: none;
+}
+
+@media (max-width: 979px) and (min-width: 768px) {
+  #chart.plottable .pie-plot .label {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  #chart.plottable .pie-plot .label {
+    display: none;
+  }
+}
+
+#chart.plottable .shadow .render-area rect {
+  fill: #DEDEDE;
+  opacity: 0.7;
+}
+
+#chart.plottable .highlight {
+  fill: #DEDEDE !important;
+}
