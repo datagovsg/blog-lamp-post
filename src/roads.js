@@ -41,4 +41,4 @@ _sortBy(data.features, f => f.properties.RD_CD_DESC).forEach(f => {
   roadNames[f.properties.RD_CD_DESC] = f.properties.RD_CD
 })
 
-printJSON(roadNames, 'data/roadNames.json', true)
+printJSON(roadNames, 'public/roadNames.json', true)
