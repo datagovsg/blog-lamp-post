@@ -13,12 +13,10 @@ import roads from '../data/roads'
 lampPostDistance(process.argv[2])
 
 export default function lampPostDistance (roadId) {
-  const road = roads.features.filter(d => d.properties.RD_CD === roadId)[0]
-  if (!road) return
-  const filtered = nearRoad(data, road)
+  const filtered = nearRoad(data, roadId)
   const histogram = nearestNeighbour(filtered)
   console.log(histogram)
-  printJSON(histogram, `public/data/histogram/${roadId}.json`)
+  printJSON(histogram, `public/data/histogram/${roadId || '_ALL_'}.json`)
 }
 
 export function nearestNeighbour (data) {
@@ -56,8 +54,9 @@ export function nearestNeighbour (data) {
   return histogram
 }
 
-export function nearRoad (data, road) {
-  const roadId = road.properties.RD_CD
+export function nearRoad (data, roadId) {
+  if (!roadId) return data
+  const road = roads.features.filter(d => d.properties.RD_CD === roadId)[0]
   data.features.forEach(feature => {
     feature.geometry.coordinates = fromSVY21(feature.geometry.coordinates)
   })

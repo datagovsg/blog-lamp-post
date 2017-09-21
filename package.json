@@ -1,22 +1,24 @@
 {
-  "name": "sg-roads",
-  "version": "0.0.0",
+  "name": "blog-lamp-post",
+  "version": "1.0.0",
   "description": "Playing around with LTA Geospatial Datasets",
-  "main": "src/index.js",
+  "main": "src/lampPostDistance.js",
   "scripts": {
-    "postinstall": "babel-node src/preprocess.js",
+    "preprocess": "babel-node src/preprocess.js",
+    "copy-lib": "cp node_modules/datagovsg-plottable-charts/lib/* public/lib/",
+    "postinstall": "npm run copy-lib && npm run preprocess",
     "test": "standard \"src/**/*.js\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yongjun21/sg-roads.git"
+    "url": "git+https://github.com/yongjun21/blog-lamp-post.git"
   },
   "author": "Yong Jun",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/yongjun21/sg-roads/issues"
+    "url": "https://github.com/yongjun21/blog-lamp-post/issues"
   },
-  "homepage": "https://github.com/yongjun21/sg-roads#readme",
+  "homepage": "https://github.com/yongjun21/blog-lamp-post#readme",
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
@@ -29,6 +31,7 @@
     "@turf/inside": "^4.5.2",
     "@turf/simplify": "^4.5.2",
     "@turf/within": "^4.5.2",
+    "datagovsg-plottable-charts": "^3.0.2",
     "lodash": "^4.17.4",
     "proj4": "^2.4.3",
     "sg-heatmap": "^2.5.8"

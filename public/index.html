@@ -11,8 +11,19 @@
         font-family: sans-serif;
       }
 
+      header, section {
+        margin: 0 auto;
+        max-width: 900px;
+        padding: 20px;
+      }
+
+      header {
+        margin-top: 40px;
+        margin-bottom: 40px;
+      }
+
       section {
-        margin: 100px 0;
+        margin-bottom: 100px;
       }
 
       h2 {
@@ -21,17 +32,30 @@
 
       #map, #chart {
         height: 500px;
-        width: 900px;
-        margin: auto;
       }
     </style>
   </head>
   <body>
+    <header>
+      <h1>Finding Lamp Post Spacing</h1>
+      <label for="filter">Choose road</label>
+      <select id="select" name="filter">
+        <option value="_ALL_" selected>ALL</option>
+        <option value="PAE02K">PIE</option>
+        <option value="AYE00N">AYE</option>
+        <option value="TAE00D">TPE</option>
+        <option value="EAP01R">ECP</option>
+        <option value="BUE01Q">BKE</option>
+        <option value="SEE04Z">SLE</option>
+        <option value="KRE01W">KJE</option>
+        <option value="BUT03J">Bukit Timah Road</option>
+      </select>
+    </header>
     <section>
       <div id="map"></div>
     </section>
     <section>
-      <h2>Histogram of Lamp Post Distance to Nearest Neighbour</h2>
+      <h2>Histogram of distance to nearest neighbour for each lamp post</h2>
       <svg id="chart"></svg>
     </section>
 
@@ -48,37 +72,60 @@
         styles: mapStyle
       })
 
-      map.data.setStyle({
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 2,
-          fillColor: 'yellow',
-          fillOpacity: 0.8,
-          strokeColor: 'yellow',
-          strokeOpacity: 0,
-          strokeWeight: 0
-        },
-        strokeWeight: 1
-      })
-
-      const roadId = 'ZZZ90A'
-
-      map.data.loadGeoJson(`data/road/${roadId}.json`)
-      map.data.loadGeoJson(`data/lampPost/${roadId}.json`)
-
-      window.fetch(`data/histogram/${roadId}.json`).then(res => res.json())
-        .then(histogram => {
-          const series = []
-          for (let i = 0; i < 50; i++) {
-            series.push({label: i + 1, value: histogram[i + 1] || 0})
-          }
-          const chart = new DatagovsgSimpleBar({
-            data: series,
-            xLabel: 'Meters',
-            yLabel: 'Frequency'
-          })
-          chart.mount(document.getElementById('chart'))
+      function generateLayer (roadId) {
+        const layer = new google.maps.Data()
+        layer.setStyle({
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 2,
+            fillColor: 'yellow',
+            fillOpacity: 0.8,
+            strokeColor: 'yellow',
+            strokeOpacity: 0,
+            strokeWeight: 0
+          },
+          strokeWeight: 1
         })
+        layer.loadGeoJson(`data/road/${roadId}.json`)
+        layer.loadGeoJson(`data/lampPost/${roadId}.json`)
+        return layer
+      }
+
+      function updateChart (roadId) {
+        return window.fetch(`data/histogram/${roadId}.json`)
+          .then(res => {
+            if (res.status !== 200) return {}
+            return res.json()
+          })
+          .then(histogram => {
+            const series = []
+            for (let i = 0; i < 50; i++) {
+              series.push({label: i + 1, value: histogram[i + 1] || 0})
+            }
+            return series
+          })
+      }
+
+      let layer = new google.maps.Data()
+
+      const chart = new DatagovsgSimpleBar({
+        data: [],
+        xLabel: 'Meters',
+        yLabel: 'Frequency'
+      })
+      chart.mount(document.getElementById('chart'))
+      updateChart('_ALL_').then(series => chart.update({data: series}))
+
+      const select = document.getElementById('select')
+      select.addEventListener('change', event => {
+        const selected = event.target.value
+        layer.setMap(null)
+        if (selected !== '_ALL_') {
+          layer = generateLayer(selected)
+          layer.setMap(map)
+        }
+        updateChart(selected).then(series => chart.update({data: series}))
+      })
     </script>
   </body>
 </html>
