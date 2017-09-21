@@ -16,7 +16,7 @@ export default function lampPostDistance (roadId) {
   const filtered = nearRoad(data, roadId)
   const histogram = nearestNeighbour(filtered)
   console.log(histogram)
-  printJSON(histogram, `public/data/histogram/${roadId || '_ALL_'}.json`)
+  printJSON(histogram, `public/data/histogram/${roadId || 'ALL'}.json`)
 }
 
 export function nearestNeighbour (data) {

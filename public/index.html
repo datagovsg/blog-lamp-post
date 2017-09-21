@@ -40,7 +40,7 @@
       <h1>Finding Lamp Post Spacing</h1>
       <label for="filter">Choose road</label>
       <select id="select" name="filter">
-        <option value="_ALL_" selected>ALL</option>
+        <option value="ALL" selected>ALL</option>
         <option value="PAE02K">PIE</option>
         <option value="AYE00N">AYE</option>
         <option value="TAE00D">TPE</option>
@@ -114,13 +114,13 @@
         yLabel: 'Frequency'
       })
       chart.mount(document.getElementById('chart'))
-      updateChart('_ALL_').then(series => chart.update({data: series}))
+      updateChart('ALL').then(series => chart.update({data: series}))
 
       const select = document.getElementById('select')
       select.addEventListener('change', event => {
         const selected = event.target.value
         layer.setMap(null)
-        if (selected !== '_ALL_') {
+        if (selected !== 'ALL') {
           layer = generateLayer(selected)
           layer.setMap(map)
         }
