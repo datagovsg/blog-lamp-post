@@ -34,7 +34,7 @@
     "@turf/inside": "^4.5.2",
     "@turf/simplify": "^4.5.2",
     "@turf/within": "^4.5.2",
-    "datagovsg-plottable-charts": "^3.0.2",
+    "datagovsg-plottable-charts": "^3.1.1",
     "lodash": "^4.17.4",
     "proj4": "^2.4.3",
     "sg-heatmap": "^2.5.8"

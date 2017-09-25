@@ -1,5 +1,5 @@
 import mapStyle from './helpers/mapStyle.js'
-import {DatagovsgSimpleBar} from 'datagovsg-plottable-charts/lib/datagovsg-charts.min.js'
+import {DatagovsgSimpleBar} from 'datagovsg-plottable-charts'
 
 const map = new google.maps.Map(document.getElementById('map'), {
   center: new google.maps.LatLng(1.352083, 103.819836),
