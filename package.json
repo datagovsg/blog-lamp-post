@@ -25,6 +25,7 @@
     "node-7z": "^0.4.0",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-commonjs": "^8.2.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "shapefile": "^0.6.2",
     "standard": "^10.0.3"
@@ -34,7 +35,7 @@
     "@turf/inside": "^4.5.2",
     "@turf/simplify": "^4.5.2",
     "@turf/within": "^4.5.2",
-    "datagovsg-plottable-charts": "^3.1.1",
+    "datagovsg-plottable-charts": "^3.3.1",
     "lodash": "^4.17.4",
     "proj4": "^2.4.3",
     "sg-heatmap": "^2.5.8"
@@ -46,7 +47,8 @@
   },
   "standard": {
     "globals": [
-      "google"
+      "google",
+      "Plottable"
     ]
   }
 }

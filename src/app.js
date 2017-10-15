@@ -1,9 +1,13 @@
 import mapStyle from './helpers/mapStyle.js'
 import {DatagovsgSimpleBar} from 'datagovsg-plottable-charts'
 
+const defaultCenter = new google.maps.LatLng(1.352083, 103.819836)
+const defaultZoom = 11
 const map = new google.maps.Map(document.getElementById('map'), {
-  center: new google.maps.LatLng(1.352083, 103.819836),
-  zoom: 12,
+  center: defaultCenter,
+  zoom: defaultZoom,
+  minZoom: 11,
+  maxZoom: 16,
   styles: mapStyle
 })
 
@@ -22,7 +26,11 @@ function generateLayer (roadId) {
     strokeWeight: 1
   })
   layer.loadGeoJson(`data/road/${roadId}.json`)
-  layer.loadGeoJson(`data/lampPost/${roadId}.json`)
+  layer.loadGeoJson(`data/lampPost/${roadId}.json`, null, features => {
+    const midPoint = Math.floor(features.length / 2)
+    map.setCenter(features[midPoint].getGeometry().get())
+    map.setZoom(16)
+  })
   return layer
 }
 
@@ -58,6 +66,9 @@ select.addEventListener('change', event => {
   if (selected !== 'ALL') {
     layer = generateLayer(selected)
     layer.setMap(map)
+  } else {
+    map.setCenter(defaultCenter)
+    map.setZoom(defaultZoom)
   }
   updateChart(selected).then(series => chart.update({data: series}))
 })

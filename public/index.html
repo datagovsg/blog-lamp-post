@@ -2,44 +2,16 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lamp Posts</title>
     <link rel="stylesheet" href="lib/plottable.css">
-    <style>
-      @import "lib/datagovsg-charts.css";
-
-      body {
-        font-family: sans-serif;
-      }
-
-      header, section {
-        margin: 0 auto;
-        max-width: 900px;
-        padding: 0 20px;
-      }
-
-      header {
-        margin-top: 40px;
-        margin-bottom: 40px;
-      }
-
-      section {
-        margin-bottom: 100px;
-      }
-
-      h2 {
-        text-align: center;
-      }
-
-      #map, #chart {
-        height: 500px;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <header>
-      <h1>Finding Lamp Post Spacing</h1>
-      <label for="filter">Choose road</label>
-      <select id="select" name="filter">
+      <h1 class="title">Finding Lamp Post Spacing</h1>
+      <label for="select">Choose road</label>
+      <select id="select">
         <option value="ALL" selected>ALL</option>
         <option value="PAE02K">PIE</option>
         <option value="AYE00N">AYE</option>
@@ -51,13 +23,15 @@
         <option value="BUT03J">Bukit Timah Road</option>
       </select>
     </header>
-    <section>
-      <div id="map"></div>
-    </section>
-    <section>
-      <h2>Histogram of distance to nearest neighbour for each lamp post</h2>
-      <svg id="chart"></svg>
-    </section>
+    <div class="container">
+      <section class="chart">
+        <h4 class="chart-title">Histogram of distance to nearest neighbour for each lamp post</h4>
+        <svg id="chart"></svg>
+      </section>
+      <section class="map">
+        <div id="map"></div>
+      </section>
+    </div>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjqDojkROjJTFkXw4PCvAS_tQTEHpgjdc"></script>
     <script src="lib/d3.min.js"></script>
