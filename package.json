@@ -4,9 +4,11 @@
   "description": "Playing around with LTA Geospatial Datasets",
   "main": "src/lampPostDistance.js",
   "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w && http-server public/",
     "preprocess": "babel-node src/preprocess.js",
     "copy-lib": "cp node_modules/datagovsg-plottable-charts/lib/* public/lib/",
-    "postinstall": "npm run preprocess && rollup -c",
+    "postinstall": "npm run preprocess && npm run build",
     "test": "standard \"src/**/*.js\""
   },
   "repository": {
@@ -35,7 +37,7 @@
     "@turf/inside": "^4.5.2",
     "@turf/simplify": "^4.5.2",
     "@turf/within": "^4.5.2",
-    "datagovsg-plottable-charts": "^3.3.1",
+    "datagovsg-plottable-charts": "^3.4.2",
     "lodash": "^4.17.4",
     "proj4": "^2.4.3",
     "sg-heatmap": "^2.5.8"

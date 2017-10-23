@@ -1,5 +1,8 @@
 import mapStyle from './helpers/mapStyle.js'
 import {DatagovsgSimpleBar} from 'datagovsg-plottable-charts'
+import {getColorScale, DATAGOVSG_COLORS} from 'datagovsg-plottable-charts/dist/es/helpers'
+
+import max from 'lodash/max'
 
 const defaultCenter = new google.maps.LatLng(1.352083, 103.819836)
 const defaultZoom = 11
@@ -45,6 +48,10 @@ function updateChart (roadId) {
       for (let i = 0; i < 50; i++) {
         series.push({label: i + 1, value: histogram[i + 1] || 0})
       }
+      const maxValue = max(series.map(d => d.value))
+      series.forEach(d => {
+        d.mode = d.value === maxValue
+      })
       return series
     })
 }
@@ -56,6 +63,11 @@ const chart = new DatagovsgSimpleBar({
   xLabel: 'Meters',
   yLabel: 'Frequency'
 })
+chart.plot.attr('fill', d => d.mode,
+  getColorScale().range([DATAGOVSG_COLORS[1], DATAGOVSG_COLORS[2]]))
+chart.onUpdate = function ({data}) {
+
+}
 chart.mount(document.getElementById('chart'))
 updateChart('ALL').then(series => chart.update({data: series}))
 

@@ -851,6 +851,7 @@ var Chart = function () {
   }, {
     key: 'mount',
     value: function mount(element) {
+      element.classList.add('datagovsg-chart');
       this.layout.renderTo(element);
       window.addEventListener('resize', this.resizeHandler);
       this.onMount(element);
@@ -5181,24 +5182,11 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   add a css rule on .highlight and mark it !important. Eg.
 
   .highlight {
+    stroke: anotherColor!important;
     fill: anotherColor!important;
   }
 */
-function highlightOnHover(component, props) {
-  new Plottable.Interactions.Pointer().onPointerMove(function (point) {
-    component.plot.entities().forEach(function (e) {
-      e.selection.classed('highlight', false).style('fill', '');
-    });
-    var target = component.plot.entitiesAt(point)[0];
-    if (target) {
-      target.selection.classed('highlight', true).style('fill', 'lightgrey');
-    }
-  }).onPointerExit(function (point) {
-    component.plot.entities().forEach(function (e) {
-      e.selection.classed('highlight', false).style('fill', '');
-    });
-  }).attachTo(component.plot);
-}
+
 
 /**
  * @param {Function} props.title - required
@@ -5396,7 +5384,6 @@ var DatagovsgSimplePie = function (_SimplePie) {
 
     var _this = _possibleConstructorReturn(this, (DatagovsgSimplePie.__proto__ || Object.getPrototypeOf(DatagovsgSimplePie)).call(this, props));
 
-    highlightOnHover(_this);
     setupOuterLabel(_this, { labelFormatter: function labelFormatter(d) {
         return d.label;
       } });
@@ -5421,7 +5408,6 @@ var DatagovsgSimpleBar = function (_SimpleBar) {
 
     var _this2 = _possibleConstructorReturn(this, (DatagovsgSimpleBar.__proto__ || Object.getPrototypeOf(DatagovsgSimpleBar)).call(this, props));
 
-    highlightOnHover(_this2);
     downsampleTicks(_this2);
     customizeTimeAxis(_this2, props.isTimeSeries);
 
@@ -5448,8 +5434,6 @@ var DatagovsgHorizontalBar = function (_SimpleBar2) {
     }, props);
 
     var _this3 = _possibleConstructorReturn(this, (DatagovsgHorizontalBar.__proto__ || Object.getPrototypeOf(DatagovsgHorizontalBar)).call(this, props));
-
-    highlightOnHover(_this3, props.isTimeSeries);
 
     postprocess(_this3.yAxis, _this3.xAxis, props);
     _this3.xAxis.tickLabelPadding(0);
@@ -5540,13 +5524,85 @@ var DatagovsgLine = function (_MultipleLine) {
 function postprocess(primaryAxis, secondaryAxis) {
   var props = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-  primaryAxis.margin(12).innerTickLength(5).endTickLength(0).tickLabelPadding(5);
+  primaryAxis.margin(12).innerTickLength(5).endTickLength(5).tickLabelPadding(5);
   secondaryAxis.margin(12).innerTickLength(0).endTickLength(0).tickLabelPadding(5).showEndTickLabels(true).addClass('hide-baseline').formatter(getCustomNumberFormatter(props.isPercentage));
   // hack to show end tick labels
   secondaryAxis._hideOverflowingTickLabels = function () {
     return null;
   };
 }
+
+/**
+ * The base implementation of methods like `_.max` and `_.min` which accepts a
+ * `comparator` to determine the extremum value.
+ *
+ * @private
+ * @param {Array} array The array to iterate over.
+ * @param {Function} iteratee The iteratee invoked per iteration.
+ * @param {Function} comparator The comparator used to compare values.
+ * @returns {*} Returns the extremum value.
+ */
+function baseExtremum(array, iteratee, comparator) {
+  var index = -1,
+      length = array.length;
+
+  while (++index < length) {
+    var value = array[index],
+        current = iteratee(value);
+
+    if (current != null && (computed === undefined
+          ? (current === current && !isSymbol_1(current))
+          : comparator(current, computed)
+        )) {
+      var computed = current,
+          result = value;
+    }
+  }
+  return result;
+}
+
+var _baseExtremum = baseExtremum;
+
+/**
+ * The base implementation of `_.gt` which doesn't coerce arguments.
+ *
+ * @private
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if `value` is greater than `other`,
+ *  else `false`.
+ */
+function baseGt(value, other) {
+  return value > other;
+}
+
+var _baseGt = baseGt;
+
+/**
+ * Computes the maximum value of `array`. If `array` is empty or falsey,
+ * `undefined` is returned.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Math
+ * @param {Array} array The array to iterate over.
+ * @returns {*} Returns the maximum value.
+ * @example
+ *
+ * _.max([4, 2, 8, 6]);
+ * // => 8
+ *
+ * _.max([]);
+ * // => undefined
+ */
+function max(array) {
+  return (array && array.length)
+    ? _baseExtremum(array, identity_1, _baseGt)
+    : undefined;
+}
+
+var max_1 = max;
 
 var defaultCenter = new google.maps.LatLng(1.352083, 103.819836);
 var defaultZoom = 11;
@@ -5590,6 +5646,12 @@ function updateChart(roadId) {
     for (var i = 0; i < 50; i++) {
       series.push({ label: i + 1, value: histogram[i + 1] || 0 });
     }
+    var maxValue = max_1(series.map(function (d) {
+      return d.value;
+    }));
+    series.forEach(function (d) {
+      d.mode = d.value === maxValue;
+    });
     return series;
   });
 }
@@ -5601,6 +5663,12 @@ var chart = new DatagovsgSimpleBar({
   xLabel: 'Meters',
   yLabel: 'Frequency'
 });
+chart.plot.attr('fill', function (d) {
+  return d.mode;
+}, getColorScale().range([DATAGOVSG_COLORS[1], DATAGOVSG_COLORS[2]]));
+chart.onUpdate = function (_ref) {
+  
+};
 chart.mount(document.getElementById('chart'));
 updateChart('ALL').then(function (series) {
   return chart.update({ data: series });
