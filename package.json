@@ -5,7 +5,7 @@
   "main": "src/lampPostDistance.js",
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -c -w && http-server public/",
+    "dev": "rollup -c -w",
     "preprocess": "babel-node src/preprocess.js",
     "copy-lib": "cp node_modules/datagovsg-plottable-charts/lib/* public/lib/",
     "postinstall": "npm run preprocess && npm run build",

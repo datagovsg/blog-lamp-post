@@ -63,8 +63,10 @@ const chart = new DatagovsgSimpleBar({
   xLabel: 'Meters',
   yLabel: 'Frequency'
 })
-chart.plot.attr('fill', d => d.mode,
-  getColorScale().range([DATAGOVSG_COLORS[1], DATAGOVSG_COLORS[2]]))
+const colorScale = getColorScale()
+  .domain([false, true])
+  .range([DATAGOVSG_COLORS[1], DATAGOVSG_COLORS[2]])
+chart.plot.attr('fill', d => d.mode, colorScale)
 chart.onUpdate = function ({data}) {
 
 }
