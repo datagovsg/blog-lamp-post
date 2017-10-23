@@ -5663,9 +5663,10 @@ var chart = new DatagovsgSimpleBar({
   xLabel: 'Meters',
   yLabel: 'Frequency'
 });
+var colorScale = getColorScale().domain([false, true]).range([DATAGOVSG_COLORS[1], DATAGOVSG_COLORS[2]]);
 chart.plot.attr('fill', function (d) {
   return d.mode;
-}, getColorScale().range([DATAGOVSG_COLORS[1], DATAGOVSG_COLORS[2]]));
+}, colorScale);
 chart.onUpdate = function (_ref) {
   
 };
